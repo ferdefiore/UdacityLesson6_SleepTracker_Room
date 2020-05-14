@@ -22,7 +22,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.example.android.trackmysleepquality.database.SleepDatabaseDao
-import com.example.android.trackmysleepquality.database.SleepDatabase_Impl
 import com.example.android.trackmysleepquality.database.SleepNight
 import com.example.android.trackmysleepquality.formatNights
 import kotlinx.coroutines.*
@@ -47,6 +46,15 @@ class SleepTrackerViewModel(
 
     private val nights = database.getAllNights()
 
+    val startButtonVissible: LiveData<Boolean?> = Transformations.map(tonight){
+        null==it
+    }
+    val stopButtonVissible: LiveData<Boolean?> = Transformations.map(tonight){
+        null!==it
+    }
+    val clearButtonVissible: LiveData<Boolean?> = Transformations.map(nights){
+        it?.isNotEmpty()
+    }
     //esto es un livedata porque definimos en el dato,
     // que nos devuelva un livedata y nos sirve para actualizar la ui automaticamente
     // es una feature de room, que nos avisa si hay cambios en ese dato
@@ -125,6 +133,7 @@ class SleepTrackerViewModel(
             database.clear()
         }
     }
+
 
 
 }

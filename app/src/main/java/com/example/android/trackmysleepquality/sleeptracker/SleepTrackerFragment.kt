@@ -53,11 +53,11 @@ class SleepTrackerFragment : Fragment() {
 
         val dataSource = SleepDatabase.getInstance(application).sleepDatabaseDao
 
-        val viewModelFactory = SleepTrackerViewModelFactory(dataSource,application)
+        val viewModelFactory = SleepTrackerViewModelFactory(dataSource, application)
 
         val sleepTrackerViewModel =
                 ViewModelProviders.of(
-                        this,viewModelFactory)
+                        this, viewModelFactory)
                         .get(SleepTrackerViewModel::class.java)
 
         binding.sleepTrackerViewModel = sleepTrackerViewModel
@@ -67,8 +67,7 @@ class SleepTrackerFragment : Fragment() {
         sleepTrackerViewModel.navigationToSleepQuality.observe(this, Observer {
             it?.let {
                 this.findNavController().navigate(
-                        SleepTrackerFragmentDirections.
-                                actionSleepTrackerFragmentToSleepQualityFragment(it.nightId))
+                        SleepTrackerFragmentDirections.actionSleepTrackerFragmentToSleepQualityFragment(it.nightId))
                 sleepTrackerViewModel.doneNavigating()
             }
         })

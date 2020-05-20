@@ -46,15 +46,16 @@ class SleepTrackerViewModel(
 
     private val nights = database.getAllNights()
 
-    val startButtonVissible: LiveData<Boolean?> = Transformations.map(tonight){
-        null==it
+    val startButtonVissible: LiveData<Boolean?> = Transformations.map(tonight) {
+        null == it
     }
-    val stopButtonVissible: LiveData<Boolean?> = Transformations.map(tonight){
-        null!==it
+    val stopButtonVissible: LiveData<Boolean?> = Transformations.map(tonight) {
+        null !== it
     }
-    val clearButtonVissible: LiveData<Boolean?> = Transformations.map(nights){
+    val clearButtonVissible: LiveData<Boolean?> = Transformations.map(nights) {
         it?.isNotEmpty()
     }
+
     //esto es un livedata porque definimos en el dato,
     // que nos devuelva un livedata y nos sirve para actualizar la ui automaticamente
     // es una feature de room, que nos avisa si hay cambios en ese dato
@@ -66,8 +67,16 @@ class SleepTrackerViewModel(
     val navigationToSleepQuality: LiveData<SleepNight>
         get() = _navigationToSleepQuality
 
-    fun doneNavigating(){
+    fun doneNavigating() {
         _navigationToSleepQuality.value = null
+    }
+
+    private val _showSnackBarEvent = MutableLiveData<Boolean>()
+    val showSnackBarEvent: LiveData<Boolean>
+        get() = _showSnackBarEvent
+
+    fun doneShowingSnackbar() {
+        _showSnackBarEvent.value = false
     }
 
     init {
@@ -125,6 +134,7 @@ class SleepTrackerViewModel(
         uiScope.launch {
             clear()
             tonight.value = null
+            _showSnackBarEvent.value = true
         }
     }
 
@@ -133,7 +143,6 @@ class SleepTrackerViewModel(
             database.clear()
         }
     }
-
 
 
 }
